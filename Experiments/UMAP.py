@@ -2,7 +2,7 @@ from umap.umap_ import UMAP
 from sklearn.cluster import KMeans
 from sklearn.datasets import fetch_20newsgroups
 from sklearn.metrics.cluster import normalized_mutual_info_score, adjusted_rand_score
-from sentence_transformers import SentenceTransformer
+from sentence_transformers import SentenceTransformer 
 
 # Chargement des données
 ng20 = fetch_20newsgroups(subset='test')
