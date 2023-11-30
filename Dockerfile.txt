@@ -1,0 +1,13 @@
+FROM python:3.10-slim-buster
+
+# Set the working directory in the container
+WORKDIR /app
+
+
+# Copy the current directory contents into the container at /app
+COPY . /app
+
+# Install any needed packages specified in 
+
+RUN pip install umap-learn scikit-learn sentence-transformers numpy umap-learn 
+CMD ["python", "main.py"]

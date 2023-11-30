@@ -5,6 +5,7 @@ import numpy as np
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
 from sklearn.preprocessing import StandardScaler
+
 from sklearn.cluster import KMeans
 from umap.umap_ import UMAP
 
@@ -35,31 +36,27 @@ def evaluate_clustering(pred, labels):
     ari_score = adjusted_rand_score(pred, labels)
     return nmi_score, ari_score
 
-if __name__ == "__main__":
-    # Load data and embeddings
-    ng20 = fetch_20newsgroups(subset='test')
-    corpus = ng20.data[:2000]
-    labels = ng20.target[:2000]
-    model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
-    embeddings = model.encode(corpus)
-    k = len(set(labels))
+ng20 = fetch_20newsgroups(subset='test')
+corpus = ng20.data[:2000]
+labels = ng20.target[:2000]
+model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
+embeddings = model.encode(corpus)
+k = len(set(labels))
 
-    # Perform dimensionality reduction and clustering for each method
-    methods = ['ACP', 'UMAP', 't-SNE']
-    for method in methods:
-        if method == 'ACP':
-            red_emb = acp_approach(embeddings, 20)
-        elif method == 'UMAP':
-            red_emb = umap_approach(embeddings, 20)
-        elif method == 't-SNE':
-            red_emb = tsne_approach(embeddings, 3)
+methods = ['ACP', 'UMAP', 't-SNE']
+for method in methods:
+    if method == 'ACP':
+        red_emb = acp_approach(embeddings, 20)
+    elif method == 'UMAP':
+        red_emb = umap_approach(embeddings, 20)
+    elif method == 't-SNE':
+        red_emb = tsne_approach(embeddings, 3)
 
-        # Perform clustering
-        pred = kmeans_clustering(red_emb, k)
+    # Perform clustering
+    pred = kmeans_clustering(red_emb, k)
 
-        # Evaluate clustering results
-        nmi_score, ari_score = evaluate_clustering(pred, labels)
+    # Evaluate clustering results
+    nmi_score, ari_score = evaluate_clustering(pred, labels)
 
-        # Print results
-        print(f'Method: {method}\nNMI: {nmi_score:.2f} \nARI: {ari_score:.2f}\n')
-
+    # Print results
+    print(f'Method: {method}\nNMI: {nmi_score:.2f} \nARI: {ari_score:.2f}\n')
